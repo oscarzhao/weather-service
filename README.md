@@ -49,6 +49,11 @@ When a request arrives, server shall fetch weather information from the HashMap.
 
 ## TODO
 
+### Features
 1. Add air pollution status for cities (merge with weather data, currently paid OpenWeatherMap API is necessary)
-2. More graceful solution to update data (currently via Singleton Pattern and ConcurrentHashMap)
-3. test solution to be optimized
+2. Add weather API for more dimensions, e.g. forecast, daily
+
+### Development
+1. Find out a more graceful solution to do data communication (currently via Singleton Pattern and ConcurrentHashMap)
+2. Optimize test solution
+3. Introduce API management tools, for example swagger
