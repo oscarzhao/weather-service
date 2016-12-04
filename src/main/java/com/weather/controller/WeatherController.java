@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@RequestMapping(value="/api/", method=RequestMethod.GET, produces="application/json")
+@RequestMapping(value="/api/v1/", method=RequestMethod.GET, produces="application/json")
 public class WeatherController {
 	private static final Logger log = LoggerFactory.getLogger(WeatherUpdater.class);
 	
-	@RequestMapping(value="weather/current")
+	@RequestMapping(value="current")
 	public StatusResponse getCurrentWeather(@RequestParam(value="city", defaultValue="Beijing") String name){
 		FirstTierCityWeatherAPI instance = FirstTierCityWeatherAPI.getInstance();
 		AbstractWeather cwd = instance.getByCityName(name);
@@ -38,10 +38,4 @@ public class WeatherController {
 		return new StatusResponse(cwd);
 	}
 	
-//	@ResponseStatus(HttpStatus.NOT_FOUND)
-//	@ExceptionHandler(StatusNotFound.class)
-//	@ResponseBody ErrorInfo
-//	handleNotFoundRequest(HttpRequest req, Exception ex) {
-//	    return new ErrorInfo(req.getURI().getPath(), ex);
-//	} 
 }

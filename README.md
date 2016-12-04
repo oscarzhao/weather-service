@@ -30,7 +30,7 @@ The project is based on Spring Boot, exposing APIs for GET weather and air condi
 ### Access the API
 
 ```
-# curl -Ls -X GET http://localhost:8080/api/weather/current?city=Beijing
+# curl -Ls -X GET http://localhost:8080/api/v1/current?city=Beijing
 ```
 
 Currently, only FOUR cities (Beijing, Shanghai, Guangzhou, Shenzhen) are supported.

@@ -21,6 +21,7 @@ public class WeatherUpdater {
     
     public WeatherUpdater() {
     	owm = new OpenWeatherMap("");
+    	// api token is hard-coded for now
     	owm.setApiKey("34f13a1b88e200d2ac2354065b816d25");
     }
    
