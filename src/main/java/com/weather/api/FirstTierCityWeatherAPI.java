@@ -2,9 +2,10 @@ package com.weather.api;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import net.aksingh.owmjapis.CurrentWeather;
 
-import com.weather.city.City;
+import com.weather.model.City;
+
+import net.aksingh.owmjapis.CurrentWeather;
 
 /*
  * city list retrieved from http://openweathermap.org/help/city_list.txt

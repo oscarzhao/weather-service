@@ -1,4 +1,4 @@
-package com.weather.city;
+package com.weather.model;
 
 public class City {
 	private final long id;
