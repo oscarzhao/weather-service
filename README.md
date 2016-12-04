@@ -42,7 +42,7 @@ Currently, only FOUR cities (Beijing, Shanghai, Guangzhou, Shenzhen) are support
 
 ## Mechanism
 
-Once the server is started, the server shall pull weather information from OpenWeatherMap every 10 minutes, and store
+Once the server is started, the server shall pull weather information from OpenWeatherMap every 60 minutes, and store
 the response in HashMap.
 
 When a request arrives, server shall fetch weather information from the HashMap.
