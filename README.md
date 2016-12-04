@@ -20,6 +20,11 @@ The project is based on Spring Boot, exposing APIs for GET weather and air condi
 # mvn spring-boot:run
 ```
 
+### test
+
+```
+# mvn test
+```
 ### Build (and Run)
 
 ```
@@ -45,5 +50,5 @@ When a request arrives, server shall fetch weather information from the HashMap.
 ## TODO
 
 1. Add air pollution status for cities (merge with weather data, currently paid OpenWeatherMap API is necessary)
-3. More graceful solution to update data (currently via Singleton Pattern and ConcurrentHashMap)
-4. Add tests
+2. More graceful solution to update data (currently via Singleton Pattern and ConcurrentHashMap)
+3. test solution to be optimized
