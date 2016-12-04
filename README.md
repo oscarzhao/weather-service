@@ -44,7 +44,6 @@ When a request arrives, server shall fetch weather information from the HashMap.
 
 ## TODO
 
-1. If there is no weather info about the city (keyword), return 404
-2. Add air pollution status for cities (merge with weather data)
+1. Add air pollution status for cities (merge with weather data, currently paid OpenWeatherMap API is necessary)
 3. More graceful solution to update data (currently via Singleton Pattern and ConcurrentHashMap)
 4. Add tests

@@ -18,11 +18,12 @@ public class FirstTierCityWeatherAPI implements WeatherAPI {
 			new City(1795565L, "Shenzhen", "518000", "CN", 22.545540, 114.068298),
 			new City(1809858L, "Guangzhou", "510000", "CN", 23.116671, 113.250000)
 	};
+	
 	private final ConcurrentMap<String, CurrentWeather> weatherData = new ConcurrentHashMap<String, CurrentWeather>(4);
 	
 	private static final FirstTierCityWeatherAPI instance = new FirstTierCityWeatherAPI();
 	
-	public FirstTierCityWeatherAPI() {}
+	private FirstTierCityWeatherAPI() {}
 	
 	public City[] listCities() {
 		return cities;
@@ -49,7 +50,14 @@ public class FirstTierCityWeatherAPI implements WeatherAPI {
 		this.weatherData.remove(cityName);
 	}
 
-	public static FirstTierCityWeatherAPI getInstance() {
-		return instance;
-	}
+	
+	// nested class shall be initialized at the first creation of nesting class
+    private static class SingletonHelper{
+        private static final FirstTierCityWeatherAPI INSTANCE = new FirstTierCityWeatherAPI();
+    }
+    
+    public static FirstTierCityWeatherAPI getInstance(){
+        return SingletonHelper.INSTANCE;
+    }
+
 }
