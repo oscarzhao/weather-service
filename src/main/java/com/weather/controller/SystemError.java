@@ -22,24 +22,24 @@ import java.util.Map;
 @RestController
 public class SystemError implements ErrorController {
 
-    private static final String PATH = "/error";
-    
-    @Autowired
-    private ErrorAttributes errorAttributes;
+	private static final String PATH = "/error";
 
-    @RequestMapping(value = PATH, produces = "application/json")
-    StatusResponse error(HttpServletRequest request, HttpServletResponse response) {
-    	Map<String, Object> errAttr = getErrorAttributes(request, false);
-        return new StatusResponse(null, (String) errAttr.get("error"));
-    }
+	@Autowired
+	private ErrorAttributes errorAttributes;
 
-    @Override
-    public String getErrorPath() {
-        return PATH;
-    }
-    
-    private Map<String, Object> getErrorAttributes(HttpServletRequest request, boolean includeStackTrace) {
-        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-        return errorAttributes.getErrorAttributes(requestAttributes, includeStackTrace);
-    }
+	@RequestMapping(value = PATH, produces = "application/json")
+	StatusResponse error(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> errAttr = getErrorAttributes(request, false);
+		return new StatusResponse(null, (String) errAttr.get("error"));
+	}
+
+	@Override
+	public String getErrorPath() {
+		return PATH;
+	}
+
+	private Map<String, Object> getErrorAttributes(HttpServletRequest request, boolean includeStackTrace) {
+		RequestAttributes requestAttributes = new ServletRequestAttributes(request);
+		return errorAttributes.getErrorAttributes(requestAttributes, includeStackTrace);
+	}
 }

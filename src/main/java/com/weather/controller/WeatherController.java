@@ -17,25 +17,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@RequestMapping(value="/api/v1/", method=RequestMethod.GET, produces="application/json")
+@RequestMapping(value = "/api/v1/", method = RequestMethod.GET, produces = "application/json")
 public class WeatherController {
 	private static final Logger log = LoggerFactory.getLogger(WeatherUpdater.class);
-	
-	@RequestMapping(value="current")
-	public StatusResponse getCurrentWeather(@RequestParam(value="city", defaultValue="Beijing") String name){
+
+	@RequestMapping(value = "current")
+	public StatusResponse getCurrentWeather(@RequestParam(value = "city", defaultValue = "Beijing") String name) {
 		FirstTierCityWeatherAPI instance = FirstTierCityWeatherAPI.getInstance();
 		AbstractWeather cwd = instance.getByCityName(name);
-		
-		if (cwd==null) {
+
+		if (cwd == null) {
 			log.info("get city {}'s current weather data fails, because no data for it", name);
 			throw new StatusNotFound("city " + name + "'s current weather data does not exist");
 		}
-		
+
 		if (cwd.isValid() == false) {
-			log.info("get city {}'s current weather data fails, because upstream server returned invalid response {}", name, cwd.toString());
+			log.info("get city {}'s current weather data fails, because upstream server returned invalid response {}",
+					name, cwd.toString());
 			throw new StatusInternalServer("upstream server returned invalid response");
 		}
 		return new StatusResponse(cwd);
 	}
-	
+
 }

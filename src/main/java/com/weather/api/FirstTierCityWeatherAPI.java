@@ -12,23 +12,21 @@ import net.aksingh.owmjapis.CurrentWeather;
  */
 
 public class FirstTierCityWeatherAPI implements WeatherAPI {
-	private final City[] cities = new City[]{
+	private final City[] cities = new City[] { 
 			new City(1816670L, "Beijing", "100000", "CN", 39.907501, 116.397232),
 			new City(1796236L, "Shanghai", "200000", "CN", 31.222219, 121.458061),
 			new City(1795565L, "Shenzhen", "518000", "CN", 22.545540, 114.068298),
-			new City(1809858L, "Guangzhou", "510000", "CN", 23.116671, 113.250000)
-	};
-	
+			new City(1809858L, "Guangzhou", "510000", "CN", 23.116671, 113.250000) };
+
 	private final ConcurrentMap<String, CurrentWeather> weatherData = new ConcurrentHashMap<String, CurrentWeather>(4);
-	
-	private static final FirstTierCityWeatherAPI instance = new FirstTierCityWeatherAPI();
-	
-	private FirstTierCityWeatherAPI() {}
-	
+
+	private FirstTierCityWeatherAPI() {
+	}
+
 	public City[] listCities() {
 		return cities;
 	}
-	
+
 	@Override
 	public Iterable<CurrentWeather> listAll() {
 		return this.weatherData.values();
@@ -50,14 +48,13 @@ public class FirstTierCityWeatherAPI implements WeatherAPI {
 		this.weatherData.remove(cityName);
 	}
 
-	
 	// nested class shall be initialized at the first creation of nesting class
-    private static class SingletonHelper{
-        private static final FirstTierCityWeatherAPI INSTANCE = new FirstTierCityWeatherAPI();
-    }
-    
-    public static FirstTierCityWeatherAPI getInstance(){
-        return SingletonHelper.INSTANCE;
-    }
+	private static class SingletonHelper {
+		private static final FirstTierCityWeatherAPI INSTANCE = new FirstTierCityWeatherAPI();
+	}
+
+	public static FirstTierCityWeatherAPI getInstance() {
+		return SingletonHelper.INSTANCE;
+	}
 
 }

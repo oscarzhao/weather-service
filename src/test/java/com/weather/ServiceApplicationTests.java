@@ -29,85 +29,81 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ServiceApplicationTests {
-	
+
 	private final String serverUrl = "http://localhost:8080";
-	
+
 	private final CloseableHttpClient httpclient = HttpClients.createDefault();
-	
+
 	private ConfigurableApplicationContext appContext;
 
-	
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule(8089); // No-args constructor defaults to port 8080
-	
-    @Before
-    public void setUp() {
-    	appContext = SpringApplication.run(ServiceApplication.class, new String[0]);
-    }
-	
-    @After
-    public void tearDown() {
-    	SpringApplication.exit(appContext, new ExitCodeGenerator() {
-            @Override
-            public int getExitCode() {
-                return 0;
-            }
-        });
-    }
-    
+
+	@Before
+	public void setUp() {
+		appContext = SpringApplication.run(ServiceApplication.class, new String[0]);
+	}
+
+	@After
+	public void tearDown() {
+		SpringApplication.exit(appContext, new ExitCodeGenerator() {
+			@Override
+			public int getExitCode() {
+				return 0;
+			}
+		});
+	}
+
 	@Test
 	public void testGetCurrentWeatherSuccess() throws ClientProtocolException, IOException {
-		
+
 		String reqUrl = "/api/v1/current?city=Beijing";
-	    stubFor(get(urlEqualTo(reqUrl))
-	            .willReturn(aResponse()
-	                .withStatus(200)
-	                .withHeader("Content-Type", "application/json")));
-	    
-	    HttpGet httpget = new HttpGet(serverUrl + reqUrl);
-	    httpclient.execute(httpget);
-	    CloseableHttpResponse response = httpclient.execute(httpget);
-        
-	    assertEquals(200, response.getStatusLine().getStatusCode());
-	    // @todo: check the content is a valid response or not
-	    
-	    response.close();
+		stubFor(get(urlEqualTo(reqUrl))
+				.willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json")));
+
+		HttpGet httpget = new HttpGet(serverUrl + reqUrl);
+		httpclient.execute(httpget);
+		CloseableHttpResponse response = httpclient.execute(httpget);
+
+		assertEquals(200, response.getStatusLine().getStatusCode());
+		// @todo: check the content is a valid response or not
+
+		response.close();
 	}
-	
+
 	@Test
 	public void testGetCurrentWeatherFailure() throws ClientProtocolException, IOException {
-		
+
 		String reqUrl = "/api/v1/current?city=NotFound";
-	    stubFor(get(urlEqualTo(reqUrl))
-	            .willReturn(aResponse()
-	                .withStatus(404)
-	                .withHeader("Content-Type", "application/json")));
-	    
-	    HttpGet httpget = new HttpGet(serverUrl + reqUrl);
-	    httpclient.execute(httpget);
-	    CloseableHttpResponse response = httpclient.execute(httpget);
-        
-	    assertEquals(404, response.getStatusLine().getStatusCode());
-        assertEquals("{\"path\":\"/api/v1/current\",\"message\":\"city NotFound's current weather data does not exist\"}", IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset()));
-	    
-	    response.close();
+		stubFor(get(urlEqualTo(reqUrl))
+				.willReturn(aResponse().withStatus(404).withHeader("Content-Type", "application/json")));
+
+		HttpGet httpget = new HttpGet(serverUrl + reqUrl);
+		httpclient.execute(httpget);
+		CloseableHttpResponse response = httpclient.execute(httpget);
+
+		assertEquals(404, response.getStatusLine().getStatusCode());
+		assertEquals(
+				"{\"path\":\"/api/v1/current\",\"message\":\"city NotFound's current weather data does not exist\"}",
+				IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset()));
+
+		response.close();
 	}
 
 	@Test
 	public void testRouterFailure() throws ClientProtocolException, IOException {
 		String reqUrl = "/api/v1/current/notfound";
-	    stubFor(get(urlEqualTo(reqUrl))
-	            .willReturn(aResponse()
-	                .withStatus(404)
-	                .withHeader("Content-Type", "application/json")));
-	    
-	    HttpGet httpget = new HttpGet(serverUrl + reqUrl);
-	    httpclient.execute(httpget);
-	    CloseableHttpResponse response = httpclient.execute(httpget);
-        
-	    assertEquals(404, response.getStatusLine().getStatusCode());
-        assertEquals("{\"message\":\"Not Found\"}", IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset()));
-	    
-	    response.close();
+		stubFor(get(urlEqualTo(reqUrl))
+				.willReturn(aResponse().withStatus(404).withHeader("Content-Type", "application/json")));
+
+		HttpGet httpget = new HttpGet(serverUrl + reqUrl);
+		httpclient.execute(httpget);
+		CloseableHttpResponse response = httpclient.execute(httpget);
+
+		assertEquals(404, response.getStatusLine().getStatusCode());
+		assertEquals("{\"message\":\"Not Found\"}",
+				IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset()));
+
+		response.close();
 	}
 }

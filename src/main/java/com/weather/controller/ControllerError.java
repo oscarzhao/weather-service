@@ -15,28 +15,28 @@ import com.weather.model.StatusResponse;
 
 @ControllerAdvice
 @RestController
-public class ControllerError extends ResponseEntityExceptionHandler{
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    ResponseEntity<?> handleControllerException(HttpServletRequest request, Throwable ex) {
-        HttpStatus status = getStatus(request);
-        return new ResponseEntity<>(new StatusResponse(request.getRequestURL().toString(), ex), status);
-    }
-    
-    @ExceptionHandler(ErrorStatus.class)
-    @ResponseBody
-    ResponseEntity<?> handleStatusNotFoundException(HttpServletRequest request, Throwable ex) {
-    	ErrorStatus esEx = (ErrorStatus)ex;
-        return new ResponseEntity<>(new StatusResponse(request.getRequestURI(), ex), HttpStatus.valueOf(esEx.getStatusCode()));
-    }
-    
-    private HttpStatus getStatus(HttpServletRequest request) {
-        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        if (statusCode == null) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return HttpStatus.valueOf(statusCode);
-    }
+public class ControllerError extends ResponseEntityExceptionHandler {
+	@ExceptionHandler(Exception.class)
+	@ResponseBody
+	ResponseEntity<?> handleControllerException(HttpServletRequest request, Throwable ex) {
+		HttpStatus status = getStatus(request);
+		return new ResponseEntity<>(new StatusResponse(request.getRequestURL().toString(), ex), status);
+	}
 
-    
+	@ExceptionHandler(ErrorStatus.class)
+	@ResponseBody
+	ResponseEntity<?> handleStatusNotFoundException(HttpServletRequest request, Throwable ex) {
+		ErrorStatus esEx = (ErrorStatus) ex;
+		return new ResponseEntity<>(new StatusResponse(request.getRequestURI(), ex),
+				HttpStatus.valueOf(esEx.getStatusCode()));
+	}
+
+	private HttpStatus getStatus(HttpServletRequest request) {
+		Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+		if (statusCode == null) {
+			return HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return HttpStatus.valueOf(statusCode);
+	}
+
 }
