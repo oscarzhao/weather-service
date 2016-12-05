@@ -47,10 +47,14 @@ the response in HashMap.
 
 When a request arrives, server shall fetch weather information from the HashMap.
 
+When one of the upstream servers (excluding weather data server) fails to respond, code 200 is returned with additional error messages.
+For example, if api server fails to fetch weather data from upstream server, or got invalid weather data, api server shall respond with 404, or 500 to client call; 
+if api server fails to fetch data from upstream server(e.g. air quality), or got invalid data, api server shall respond with 200 and error messages to client call.
+
 ## TODO
 
 ### Features
-1. Add air pollution status for cities (merge with weather data, currently paid OpenWeatherMap API is necessary)
+1. Add air pollution status for cities (currently mock data)
 2. Add weather API for more dimensions, e.g. forecast, daily
 
 ### Development

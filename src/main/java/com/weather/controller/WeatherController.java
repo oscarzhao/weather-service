@@ -2,10 +2,13 @@ package com.weather.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.weather.api.FirstTierCityAirQualityAPI;
 import com.weather.api.FirstTierCityWeatherAPI;
 import com.weather.errors.StatusInternalServer;
 import com.weather.errors.StatusNotFound;
+import com.weather.model.AirQualityIndex;
 import com.weather.model.StatusResponse;
+import com.weather.model.WeatherWithAQI;
 import com.weather.tasks.WeatherUpdater;
 
 import net.aksingh.owmjapis.AbstractWeather;
@@ -26,17 +29,28 @@ public class WeatherController {
 		FirstTierCityWeatherAPI instance = FirstTierCityWeatherAPI.getInstance();
 		AbstractWeather cwd = instance.getByCityName(name);
 
+		// ensure weather data is correct
 		if (cwd == null) {
 			log.info("get city {}'s current weather data fails, because no data for it", name);
 			throw new StatusNotFound("city " + name + "'s current weather data does not exist");
 		}
-
 		if (cwd.isValid() == false) {
 			log.info("get city {}'s current weather data fails, because upstream server returned invalid response {}",
 					name, cwd.toString());
 			throw new StatusInternalServer("upstream server returned invalid response");
 		}
-		return new StatusResponse(cwd);
+
+		// if air quality data is not valid, still return 200, but error
+		// information recorded in messages
+		FirstTierCityAirQualityAPI airInstance = FirstTierCityAirQualityAPI.getInstance();
+		AirQualityIndex aqi = airInstance.getByCityName(name);
+		if (aqi == null) {
+			log.error("get city {}'s current air quality data fails, because no data for it", name);
+		} else if (aqi.IsValid() == false) {
+			log.error("get city {}'s current air quality data fails, because upstream server returns invalid data",
+					name);
+		}
+		return new StatusResponse(new WeatherWithAQI(cwd, aqi));
 	}
 
 }

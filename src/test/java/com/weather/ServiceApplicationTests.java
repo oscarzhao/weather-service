@@ -37,7 +37,10 @@ public class ServiceApplicationTests {
 	private ConfigurableApplicationContext appContext;
 
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule(8089); // No-args constructor defaults to port 8080
+	public WireMockRule wireMockRule = new WireMockRule(8089); // No-args
+																// constructor
+																// defaults to
+																// port 8080
 
 	@Before
 	public void setUp() {
@@ -84,7 +87,7 @@ public class ServiceApplicationTests {
 
 		assertEquals(404, response.getStatusLine().getStatusCode());
 		assertEquals(
-				"{\"path\":\"/api/v1/current\",\"message\":\"city NotFound's current weather data does not exist\"}",
+				"{\"path\":\"/api/v1/current\",\"reason\":\"city NotFound's current weather data does not exist\"}",
 				IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset()));
 
 		response.close();
@@ -101,7 +104,7 @@ public class ServiceApplicationTests {
 		CloseableHttpResponse response = httpclient.execute(httpget);
 
 		assertEquals(404, response.getStatusLine().getStatusCode());
-		assertEquals("{\"message\":\"Not Found\"}",
+		assertEquals("{\"reason\":\"Not Found\"}",
 				IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset()));
 
 		response.close();

@@ -1,27 +1,41 @@
 package com.weather.model;
 
-import net.aksingh.owmjapis.AbstractWeather;
-
 public class StatusResponse {
 	public final String path;
-	public final String message;
-	public final AbstractWeather data;
+	public final String reason;
+	public final StatusErrorMessage[] messages;
+	public final WeatherWithAQI data;
 
 	public StatusResponse(String path, Throwable ex) {
 		this.path = path;
-		this.message = ex.getMessage();
+		this.reason = ex.getMessage();
 		this.data = null;
+		this.messages = null;
 	}
 
-	public StatusResponse(String path, String message) {
+	public StatusResponse(String path, String reason) {
 		this.path = path;
-		this.message = message;
+		this.reason = reason;
+		this.messages = null;
 		this.data = null;
 	}
 
-	public StatusResponse(AbstractWeather data) {
+	public StatusResponse(WeatherWithAQI data) {
 		this.path = null;
-		this.message = null;
+		this.reason = null;
 		this.data = data;
+
+		if (data.air == null) {
+			this.messages = new StatusErrorMessage[1];
+			this.messages[0].field = "air";
+			this.messages[1].message = "no data returned from upstream server";
+		} else if (data.air.IsValid() == false) {
+			this.messages = new StatusErrorMessage[1];
+			this.messages[0].field = "air";
+			this.messages[1].message = "invalid reponse from upstream server";
+		} else {
+			this.messages = null;
+		}
 	}
+
 }

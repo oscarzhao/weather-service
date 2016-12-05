@@ -9,7 +9,9 @@ import org.json.JSONException;
 import net.aksingh.owmjapis.CurrentWeather;
 import net.aksingh.owmjapis.OpenWeatherMap;
 
+import com.weather.api.FirstTierCityAirQualityAPI;
 import com.weather.api.FirstTierCityWeatherAPI;
+import com.weather.model.AirQualityIndex;
 import com.weather.model.City;
 
 @Component
@@ -46,4 +48,25 @@ public class WeatherUpdater {
 		}
 	}
 
+	@Scheduled(fixedRate = 3600000)
+	public void updateFirstTierCityAirQualityIndex() { // run one time per hour
+		FirstTierCityAirQualityAPI instance = FirstTierCityAirQualityAPI.getInstance();
+		City[] cities = instance.listCities();
+
+		if (cities.length == 0)
+			return;
+
+		try {
+			for (int idx = 0; idx < cities.length; idx++) {
+				// getting current AQI data for the idx city
+				// here data is mocked
+				AirQualityIndex aqi = new AirQualityIndex(38, 14, 27, 7, 2, 3);
+
+				instance.save(cities[idx].getName(), aqi);
+			}
+		} catch (JSONException e) {
+			log.error("parse json fails, error:");
+			e.printStackTrace();
+		}
+	}
 }
