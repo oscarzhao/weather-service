@@ -12,6 +12,7 @@ import net.aksingh.owmjapis.CurrentWeather;
  */
 
 public class FirstTierCityWeatherAPI implements WeatherAPI {
+	// @todo: here cities are hard-coded, should be optimized
 	private final City[] cities = new City[] { new City(1816670L, "Beijing", "100000", "CN", 39.907501, 116.397232),
 			new City(1796236L, "Shanghai", "200000", "CN", 31.222219, 121.458061),
 			new City(1795565L, "Shenzhen", "518000", "CN", 22.545540, 114.068298),

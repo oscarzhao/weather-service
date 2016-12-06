@@ -2,6 +2,7 @@ package com.weather.tasks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.json.JSONException;
@@ -20,10 +21,11 @@ public class WeatherUpdater {
 
 	private static OpenWeatherMap owm;
 
+	@Value("${api.openweathermap.token}")
+	private String apiToken;
+
 	public WeatherUpdater() {
 		owm = new OpenWeatherMap("");
-		// api token is hard-coded for now
-		owm.setApiKey("34f13a1b88e200d2ac2354065b816d25");
 	}
 
 	@Scheduled(fixedRate = 3600000)
@@ -33,6 +35,9 @@ public class WeatherUpdater {
 
 		if (cities.length == 0)
 			return;
+
+		// set api token here, because set it in constructor fails
+		owm.setApiKey(this.apiToken);
 
 		try {
 			for (int idx = 0; idx < cities.length; idx++) {
@@ -55,6 +60,9 @@ public class WeatherUpdater {
 
 		if (cities.length == 0)
 			return;
+
+		// set api token here, because set it in constructor fails
+		owm.setApiKey(this.apiToken);
 
 		try {
 			for (int idx = 0; idx < cities.length; idx++) {
